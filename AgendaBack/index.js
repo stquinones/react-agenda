@@ -1,11 +1,26 @@
+const Agenda = require('./models/persons')
 const express = require('express')
 const app = express()
 const cors = require('cors')
+//const mongoose = require('mongoose')
+//const password = 'qLG1PvQjA6XWvvje'
+// DO NOT SAVE YOUR PASSWORD TO GITHUB!!
+//const url =
+//  `mongodb+srv://tamarasquinones:${password}@cluster0.punuv.mongodb.net/agendaApp?retryWrites=true&w=majority`
+//mongoose.set('strictQuery',false)
+//mongoose.connect(url)
+  
+//const agendaSchema = new mongoose.Schema({
+//  name: String,
+//  number: String,
+//})
+
+//const Agenda = mongoose.model('Agenda', agendaSchema)
 
 app.use(cors())
 app.use(express.static('dist'))
 
-let personas = [
+/*let personas = [
     { 
       "id": 1,
       "name": "Arto Hellas", 
@@ -26,7 +41,7 @@ let personas = [
       "name": "Mary Poppendieck", 
       "number": "39-23-6423122"
     }
-]
+]*/
 
 app.use(express.json())
 
@@ -36,8 +51,10 @@ app.get('/', (request, response) => {
 })
 
 app.get('/api/personas', (request, response) => {
-    response.json(personas)
-  })
+    Agenda.find({}).then(personas => {
+      response.json(personas)
+    })
+})
 
 app.get('/api/personas/:id', (request, response) => {
     const id = Number(request.params.id)
@@ -103,7 +120,8 @@ app.post('/api/persons', (request, response) =>{
 });
 
 
-const PORT = 3001
+//const PORT = 3001
+const PORT = process.env.PORT
   app.listen(PORT, () => {
     console.log(`Server running on port ${PORT}`)
   })  
